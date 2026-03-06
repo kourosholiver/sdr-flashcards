@@ -1,0 +1,182 @@
+[
+  {
+    "id": "card-001",
+    "question": "Not interested",
+    "answer": "You:\nFair enough. Quick question though — do you already have this sorted, or is it just not a priority right now?\n\nIf they engage:\nWhat would it take for it to be a priority?",
+    "type": "Dismissive Objections"
+  },
+  {
+    "id": "card-002",
+    "question": "What do you do?",
+    "answer": "The problem that we solve is contract blindness. This creates 3 issues. Can I share what they are?\n\n1.) Expensive mistakes e.g unwanted auto renewals\n2.) Missed opportunities in your contracts like missed price increases\n3.) Dangerous risks that are lurking in your contracts that you don't know about but could bite you like uncapped liabilities.\n\nHow are you preventing these at NAME?",
+    "type": "Dismissive Objections"
+  },
+  {
+    "id": "card-003",
+    "question": "Call me in 6 months",
+    "answer": "You:\nNo problem. What's happening in six months?\n\nIf they mention timing:\nMakes sense. I'll put a note in. What's driving the timing, if you don't mind me asking?",
+    "type": "Dismissive Objections"
+  },
+  {
+    "id": "card-004",
+    "question": "Send me an email",
+    "answer": "You:\nHappy to. What would have to be in that email to make it worth seeing a demo?\n\nIf they're vague or resistant:\nBeing honest, most people say that to get me off the phone. Is that what's happening here?",
+    "type": "Dismissive Objections"
+  },
+  {
+    "id": "card-005",
+    "question": "Not my responsibility",
+    "answer": "You:\nTotally understand. I'm curious — who's on the hook if you miss a key date in your contracts?\n\nThen:\nAlright if I mention we spoke when I reach out?",
+    "type": "Dismissive Objections"
+  },
+  {
+    "id": "card-006",
+    "question": "Where'd you get my number?",
+    "answer": "You:\nWe use a data provider called Apollo to get our numbers. Sorry, it doesn't tell us if it's a work number or personal number. Is this your personal number?\n\nThen:\nI'm happy to delete your number from our database and I can forward you the opt out link to Apollo so no other company can find it.",
+    "type": "Dismissive Objections"
+  },
+  {
+    "id": "card-007",
+    "question": "I'm in a meeting",
+    "answer": "You:\nUnderstood. In 10 seconds I can tell you why I called and if it's not relevant I won't call back.\n\nIf it is relevant:\nI'm happy to schedule some time to call you back.",
+    "type": "Dismissive Objections"
+  },
+  {
+    "id": "card-008",
+    "question": "Is this a cold call?",
+    "answer": "You:\nYes it is. But this is one that you'll want to take.\n\nThen:\nQuick question — what happens to your contracts after they're signed?\n\nAlternative:\nI often speak to legal teams who are fed up with using file systems like SharePoint for storing their contracts. What's your current set up?",
+    "type": "Dismissive Objections"
+  },
+  {
+    "id": "card-009",
+    "question": "I thought you were someone else",
+    "answer": "You:\nSorry to disappoint — if they call you back feel free to hang up.\n\nI'm calling because I speak to legal teams who are fed up with using file systems like SharePoint for storing their contracts. What's your current set up?",
+    "type": "Dismissive Objections"
+  },
+  {
+    "id": "card-010",
+    "question": "Hang up",
+    "answer": "Follow-up call (a week later):\nYou hung up on me last Tuesday around half two. I know I interrupted you then and probably am now too, but hear me out for 30 seconds?\n\nThen:\nI called because most legal teams are buried in contract chaos — can't find documents, miss renewals, don't trust their own data. If that's not you, brilliant. But if it is, worth a conversation?",
+    "type": "Dismissive Objections"
+  },
+  {
+    "id": "card-011",
+    "question": "No budget",
+    "answer": "You:\nUnderstood. Just out of curiosity — is that because this isn't a priority, or has budget already been allocated for this year?\n\nIf already allocated:\nWho would normally own budget for something like this?\n\nIf budget wasn't an issue, would this be a problem worth solving?\n\nEither:\nBudget conversations typically happen in September. Let's jump on a call where I walk you through pricing so you're prepared going into those conversations — you'll have everything in your back pocket.\n\nOr:\nWhen people aren't ready to buy, what's usually useful is a demo where we show you pricing and tell you what to look out for when speaking to other vendors…",
+    "type": "\"Not the right time\" Objections"
+  },
+  {
+    "id": "card-012",
+    "question": "Too expensive",
+    "answer": "You:\nFair. Was it the price itself, or that you didn't see the value in it?\n\nIf they engage:\nMost teams are shocked when they add up the hours their people spend hunting for contracts and updating spreadsheets. Worth walking through the maths?",
+    "type": "\"Not the right time\" Objections"
+  },
+  {
+    "id": "card-013",
+    "question": "Competing priorities",
+    "answer": "You:\nI hear that constantly. Is this a temporary crunch, or are you just permanently underwater?\n\nIf they mention being lean:\nThat's exactly who we work with. The whole point of Nomio is that we do the work — you just upload contracts. Worth seeing how that works?",
+    "type": "\"Not the right time\" Objections"
+  },
+  {
+    "id": "card-014",
+    "question": "We need to hire someone first",
+    "answer": "You:\nMakes sense. Is the hire already in motion, or still being scoped out?\n\nIf they're hiring:\nMight be useful to have options ready for when they start. Most new GCs or Heads of Procurement want to fix contract chaos on day one.",
+    "type": "\"Not the right time\" Objections"
+  },
+  {
+    "id": "card-015",
+    "question": "We don't need something like this",
+    "answer": "You:\nDo you mind me asking why?\n\nIf they engage:\nSo when you have a question about a signed contract — what happens?",
+    "type": "\"Not the right time\" Objections"
+  },
+  {
+    "id": "card-016",
+    "question": "We do it in-house",
+    "answer": "You:\nGot it. So you're managing everything in spreadsheets and shared drives?\n\nIf they confirm:\nWhat's an example of a question you're usually asked about your contracts? Can you walk me through how you would answer it?\n\nPotential follow-ups:\n— How long does it take?\n— How can you fully trust it?\n— What if the spreadsheet owner is on sick leave?",
+    "type": "\"We're Fine\" Objections"
+  },
+  {
+    "id": "card-017",
+    "question": "We use a competitor (known CLM)",
+    "answer": "You:\nNice. On a scale of 1–10, how well is it working for you?\n\nIf it's not working well:\nYou mentioned X. Why is it not a 10?\n\nIf it is working:\nI've spoken to over 1,000 GCs. CLMs fail for one of three reasons — would you like to know what they are?\n— Who does the work: is it you or the vendor?\n— Is it easy to use?\n— Can you fully trust all the data?\n\nWhich of these 3 does your CLM most struggle with?\n\nOther questions:\n— How labour intensive is it to maintain?",
+    "type": "\"We're Fine\" Objections"
+  },
+  {
+    "id": "card-018",
+    "question": "We use AI",
+    "answer": "You:\nTell me more.\n\nIf they engage:\nHow do you make sure the data is always accurate?\n\nHow do you make sure your contract data is fed into your other systems — like an ERP, Procurement system, or CRM?",
+    "type": "\"We're Fine\" Objections"
+  },
+  {
+    "id": "card-019",
+    "question": "We use another vendor (unknown)",
+    "answer": "You:\nNice. On a scale of 1–10, how well is it working for you?\n\nIf it's not working well:\nYou mentioned X. Why is it not a 10?\n\nIf it is working:\nI've spoken to over 1,000 GCs. Systems fail for one of three reasons — would you like to know what they are?\n— Who does the work: is it you or the vendor?\n— Is it easy to use?\n— Can you fully trust all the data?\n\nWhich of these 3 does your system most struggle with?\n\nOther questions:\n— How labour intensive is it to maintain?",
+    "type": "\"We're Fine\" Objections"
+  },
+  {
+    "id": "card-020",
+    "question": "We're on top of our renewals",
+    "answer": "You:\nOut of curiosity, how are you managing them?\n\nIf manual process:\nAs you scale, is the plan to keep the process manual?\n\nIf they use a system:\n— Go to system objection handling.\n— Sounds like renewals isn't a problem then. Do you have total visibility of all the information you care about in your contracts?",
+    "type": "\"We're Fine\" Objections"
+  },
+  {
+    "id": "card-021",
+    "question": "Most of our contracts are standard",
+    "answer": "You:\nGreat. How are you keeping track of key dates in your contracts?",
+    "type": "\"We're Fine\" Objections"
+  },
+  {
+    "id": "card-022",
+    "question": "Our AI is pretty accurate",
+    "answer": "You:\nIs it 100% accurate?\n\nIf they say high 80s/low 90s:\nWhere does it make mistakes?\n\nThen:\nHow do you know when the information is inaccurate? Do you have to read the actual contracts?\n\nHow are you checking accuracy on the more complex contracts where it's more likely to make a mistake?\n\nHow do you fix the mistakes?\n\nWhen you're giving a report to an exec — how important is it to have fully accurate data?",
+    "type": "\"We're Fine\" Objections"
+  },
+  {
+    "id": "card-023",
+    "question": "Not enough contracts to warrant a solution",
+    "answer": "You:\nHow many contracts are we talking, and what's the split between supplier and customer?\n\nThen:\nAre these complex or highly negotiated contracts?\n\nIf no:\nSo how are you managing them?",
+    "type": "\"We're Fine\" Objections"
+  },
+  {
+    "id": "card-024",
+    "question": "I don't have the time to implement something like this",
+    "answer": "You:\nHow long do you think it would take to implement something like this?\n\nActually — our entire USP is built around solving this exact problem. It's significantly less time than you'd think. We only need an hour of your time and we do the rest. CLM implementations take months and most fail. Our premise is that legal teams are overworked and understaffed — so we do the heavy lifting.\n\nThen:\nHow much time is your team spending right now chasing down contracts, updating spreadsheets, or answering 'do we have this document?' questions?",
+    "type": "\"We're Fine\" Objections"
+  },
+  {
+    "id": "card-025",
+    "question": "We have a document management system already",
+    "answer": "You:\nNice. On a scale of 1–10, how well is it working for you?\n\nIf it's not working well:\nYou mentioned X. Why is it not a 10?\n\nIf it is working:\nI've spoken to over 1,000 GCs. CLMs fail for one of three reasons — would you like to know what they are?\n— Who does the work: is it you or the vendor?\n— Is it easy to use?\n— Can you fully trust all the data?\n\nWhich of these 3 does your system most struggle with?\n\nOther questions:\n— How labour intensive is it to maintain?\n— When the business comes to you with contract questions, how do you answer it?",
+    "type": "\"We're Fine\" Objections"
+  },
+  {
+    "id": "card-026",
+    "question": "Why just a repository?",
+    "answer": "You:\nBecause repositories are where CLMs go to die. Everyone buys a CLM thinking they'll get everything, then spends six months trying to implement it, and ends up with an expensive mess they can't trust.\n\nWe do one thing properly: give you a contract repository that actually works, with data you can rely on, in two weeks. Then you can bolt on whatever else you need — drafting tools, e-sig, whatever. But you've got the foundation sorted.\n\nIf they push back:\nPut it this way — would you rather have a repository that's live in two weeks with 99% accurate data, or a CLM that promises everything but takes a year to implement and still doesn't have your historic contracts organised?",
+    "type": "Product Questions"
+  },
+  {
+    "id": "card-027",
+    "question": "How does Nomio compare to CLMs?",
+    "answer": "You:\nWe're not a CLM. We don't do drafting, approvals, or e-signatures. We just do the repository bit — but we do it properly.\n\nThe difference: CLMs make you do all the work. You configure fields, train the system, clean your data, maintain it forever. Most teams never finish implementation, or it falls apart after six months.\n\nWe do all that work for you. You send us contracts, we organise them, capture every key term with human review, and maintain it forever. Takes two weeks and less than an hour of your time.\n\nThen:\nAre you actually using a CLM now, or just evaluating options?",
+    "type": "Product Questions"
+  },
+  {
+    "id": "card-028",
+    "question": "Why can't I just use Copilot?",
+    "answer": "You:\nYou can — if you're happy with 70–80% accuracy and doing all the validation yourself.\n\nCopilot will pull answers from your contracts, but it won't structure your data, it won't tell you what's missing, and it won't maintain a repository you can actually report from. It's a search tool, not a system of record.\n\nWe give you structured, validated data on every contract — dates, values, terms, obligations — that you can filter, report on, and trust. Completely different use case.\n\nThen:\nAre you trying to solve 'I need to find a clause in a contract' — or 'I need to know what's expiring next quarter across 500 contracts'?",
+    "type": "Product Questions"
+  },
+  {
+    "id": "card-029",
+    "question": "Why would we get multiple separate tools if we can just get one?",
+    "answer": "You:\nBecause the one tool for everything almost never works in practice.\n\nYou end up with a CLM that does ten things badly instead of three things well. Then you spend a year trying to implement it, your team hates using it, and your contracts are still a mess.\n\nBetter approach: best-in-class repository (us), then integrate with whatever drafting or approval tools you actually need. Most CLMs can't even get the repository bit right — that's where they fail first.\n\nThen:\nIf you've got a CLM now, is it actually organising your historic contracts, or just handling new ones going forward?",
+    "type": "Product Questions"
+  },
+  {
+    "id": "card-030",
+    "question": "We have other IT transformation projects in the way, so Nomio will have to come after those",
+    "answer": "You:\nThat's exactly why teams choose us.\n\nYour IT projects take months and need massive input from your team. We take two weeks and less than an hour of your time — we don't compete for resources.\n\nMost of our customers are mid-implementation on something else when they onboard with us. It's not an either/or.\n\nThen:\nWhat projects are ahead of us in the queue?",
+    "type": "Competing Priorities"
+  }
+]

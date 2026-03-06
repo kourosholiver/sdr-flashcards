@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "sdr-flashcards",
+      "runtimeExecutable": "/Users/oliverrutherford/Library/Application Support/Zed/node/node-v24.11.0-darwin-arm64/bin/node",
+      "runtimeArgs": ["/Users/oliverrutherford/Library/Application Support/Zed/node/node-v24.11.0-darwin-arm64/lib/node_modules/npm/bin/npm-cli.js", "run", "dev"],
+      "port": 5173
+    }
+  ]
+}
