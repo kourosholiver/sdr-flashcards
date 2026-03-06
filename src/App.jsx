@@ -152,7 +152,7 @@ export default function App() {
         <div className="header-inner">
           <div>
             <h1 className="app-title">SDR Flashcards</h1>
-            <p className="app-subtitle">Nomio Sales Practise</p>
+            <p className="app-subtitle">Nomio Sales Practice</p>
           </div>
           <button className="btn-ghost" onClick={handleResetProgress} title="Reset all progress">
             Reset
