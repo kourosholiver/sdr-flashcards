@@ -26,7 +26,7 @@ export default function App() {
   const [allCards, setAllCards] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
-  const [mode, setMode] = useState('standup')       // 'standup' | 'study'
+  const [mode, setMode] = useState('study')          // 'standup' | 'study'
   const [studyMode, setStudyMode] = useState('review') // 'review' | 'practice'
 
   const [sm2State, setSm2State] = useState(loadSm2State)

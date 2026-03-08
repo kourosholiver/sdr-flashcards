@@ -27,7 +27,6 @@ const TAGLINES = [
 export default function StandupIntro({ onStart }) {
   const [ready, setReady] = useState(false)   // avatars have landed
   const [launching, setLaunching] = useState(false) // start button pressed
-  const [tagline] = useState(() => TAGLINES[Math.floor(Math.random() * TAGLINES.length)])
   const [musicStarted, setMusicStarted] = useState(false)
 
   // Music starts on first meaningful interaction (avoids autoplay block)
@@ -108,9 +107,6 @@ export default function StandupIntro({ onStart }) {
           </div>
         ))}
       </div>
-
-      {/* Tagline */}
-      <p className="intro-tagline">"{tagline}"</p>
 
       {/* Big start button */}
       <button
