@@ -3,6 +3,7 @@ import FlashCard from './components/FlashCard'
 import CategoryFilter from './components/CategoryFilter'
 import RatingButtons from './components/RatingButtons'
 import StandupMode from './components/StandupMode'
+import AnswerPractice from './components/AnswerPractice'
 import { fetchCards } from './utils/notion'
 import { applyRating, buildQueue, dueCount, DEFAULT_STATE } from './utils/sm2'
 import './App.css'
@@ -25,7 +26,8 @@ export default function App() {
   const [allCards, setAllCards] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
-  const [mode, setMode] = useState('standup') // 'standup' | 'study'
+  const [mode, setMode] = useState('standup')       // 'standup' | 'study'
+  const [studyMode, setStudyMode] = useState('review') // 'review' | 'practice'
 
   const [sm2State, setSm2State] = useState(loadSm2State)
   const [selectedCategory, setSelectedCategory] = useState('All')
@@ -168,7 +170,22 @@ export default function App() {
               counts={counts}
             />
 
-            {sessionComplete ? (
+              <div className="study-mode-toggle">
+              <button
+                className={`study-mode-btn ${studyMode === 'review' ? 'study-mode-btn--active' : ''}`}
+                onClick={() => setStudyMode('review')}
+              >
+                Review cards
+              </button>
+              <button
+                className={`study-mode-btn ${studyMode === 'practice' ? 'study-mode-btn--active' : ''}`}
+                onClick={() => setStudyMode('practice')}
+              >
+                Practice answers
+              </button>
+            </div>
+
+          {sessionComplete ? (
               <div className="session-complete">
                 <div className="complete-icon">🎉</div>
                 <h2>Session complete!</h2>
@@ -204,13 +221,18 @@ export default function App() {
                   </div>
                 </div>
 
-                <FlashCard
-                  card={currentCard}
-                  isFlipped={isFlipped}
-                  onFlip={handleFlip}
-                />
-
-                {isFlipped && <RatingButtons onRate={handleRate} />}
+                {studyMode === 'practice' ? (
+                  <AnswerPractice card={currentCard} onRate={handleRate} />
+                ) : (
+                  <>
+                    <FlashCard
+                      card={currentCard}
+                      isFlipped={isFlipped}
+                      onFlip={handleFlip}
+                    />
+                    {isFlipped && <RatingButtons onRate={handleRate} />}
+                  </>
+                )}
               </>
             )}
           </>
