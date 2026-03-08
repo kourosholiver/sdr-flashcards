@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useMemo } from 'react'
 import FlashCard from './components/FlashCard'
 import CategoryFilter from './components/CategoryFilter'
 import RatingButtons from './components/RatingButtons'
+import StandupMode from './components/StandupMode'
 import { fetchCards } from './utils/notion'
 import { applyRating, buildQueue, dueCount, DEFAULT_STATE } from './utils/sm2'
 import './App.css'
@@ -24,6 +25,7 @@ export default function App() {
   const [allCards, setAllCards] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [mode, setMode] = useState('standup') // 'standup' | 'study'
 
   const [sm2State, setSm2State] = useState(loadSm2State)
   const [selectedCategory, setSelectedCategory] = useState('All')
@@ -33,7 +35,6 @@ export default function App() {
   const [sessionComplete, setSessionComplete] = useState(false)
   const [sessionStats, setSessionStats] = useState({ rated: 0 })
 
-  // Fetch cards on mount
   useEffect(() => {
     fetchCards()
       .then(({ cards }) => {
@@ -46,13 +47,11 @@ export default function App() {
       })
   }, [])
 
-  // Derive available categories
   const categories = useMemo(() => {
     const types = [...new Set(allCards.map(c => c.type).filter(Boolean))]
     return types.sort()
   }, [allCards])
 
-  // Due counts per category for the filter badges
   const counts = useMemo(() => {
     const result = { All: dueCount(allCards, sm2State) }
     categories.forEach(cat => {
@@ -62,7 +61,6 @@ export default function App() {
     return result
   }, [allCards, categories, sm2State])
 
-  // Rebuild queue when category or cards change
   const startSession = useCallback((category, cards, sm2) => {
     const filtered = category === 'All' ? cards : cards.filter(c => c.type === category)
     const q = buildQueue(filtered, sm2)
@@ -80,37 +78,24 @@ export default function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [allCards, selectedCategory])
 
-  const handleCategoryChange = (cat) => {
-    setSelectedCategory(cat)
-    // startSession will run via the effect above
-  }
-
   const handleFlip = () => setIsFlipped(true)
 
   const handleRate = (quality) => {
     const card = queue[currentIndex]
     if (!card) return
-
     const prevState = sm2State[card.id] || { ...DEFAULT_STATE }
     const newCardState = applyRating(prevState, quality)
     const newSm2 = { ...sm2State, [card.id]: newCardState }
-
     setSm2State(newSm2)
     saveSm2State(newSm2)
-
     const nextIndex = currentIndex + 1
     setSessionStats(s => ({ ...s, rated: s.rated + 1 }))
-
     if (nextIndex >= queue.length) {
       setSessionComplete(true)
     } else {
       setCurrentIndex(nextIndex)
       setIsFlipped(false)
     }
-  }
-
-  const handleRestart = () => {
-    startSession(selectedCategory, allCards, sm2State)
   }
 
   const handleResetProgress = () => {
@@ -154,61 +139,79 @@ export default function App() {
             <h1 className="app-title">SDR Flashcards</h1>
             <p className="app-subtitle">Nomio Sales Practice</p>
           </div>
-          <button className="btn-ghost" onClick={handleResetProgress} title="Reset all progress">
-            Reset
-          </button>
+          <div className="mode-toggle">
+            <button
+              className={`mode-btn ${mode === 'standup' ? 'mode-btn--active' : ''}`}
+              onClick={() => setMode('standup')}
+            >
+              Standup
+            </button>
+            <button
+              className={`mode-btn ${mode === 'study' ? 'mode-btn--active' : ''}`}
+              onClick={() => setMode('study')}
+            >
+              Self Study
+            </button>
+          </div>
         </div>
       </header>
 
       <main className="app-main">
-        <CategoryFilter
-          categories={categories}
-          selected={selectedCategory}
-          onChange={handleCategoryChange}
-          counts={counts}
-        />
-
-        {sessionComplete ? (
-          <div className="session-complete">
-            <div className="complete-icon">🎉</div>
-            <h2>Session complete!</h2>
-            <p>You rated {sessionStats.rated} card{sessionStats.rated !== 1 ? 's' : ''}.</p>
-            <p className="complete-sub">Cards you found hard will appear again sooner.</p>
-            <button className="btn-primary" onClick={handleRestart}>
-              Practice again
-            </button>
-          </div>
-        ) : totalInQueue === 0 ? (
-          <div className="session-complete">
-            <div className="complete-icon">📭</div>
-            <h2>No cards found</h2>
-            <p>There are no cards in this category yet.</p>
-          </div>
+        {mode === 'standup' ? (
+          <StandupMode cards={allCards} />
         ) : (
           <>
-            <div className="progress-bar-wrap">
-              <div className="progress-meta">
-                <span>Card {currentIndex + 1} of {totalInQueue}</span>
-                {dueInQueue > 0 && (
-                  <span className="progress-due">{dueInQueue} due today</span>
-                )}
-              </div>
-              <div className="progress-track">
-                <div
-                  className="progress-fill"
-                  style={{ width: `${((currentIndex) / totalInQueue) * 100}%` }}
-                />
-              </div>
-            </div>
-
-            <FlashCard
-              card={currentCard}
-              isFlipped={isFlipped}
-              onFlip={handleFlip}
+            <CategoryFilter
+              categories={categories}
+              selected={selectedCategory}
+              onChange={setSelectedCategory}
+              counts={counts}
             />
 
-            {isFlipped && (
-              <RatingButtons onRate={handleRate} />
+            {sessionComplete ? (
+              <div className="session-complete">
+                <div className="complete-icon">🎉</div>
+                <h2>Session complete!</h2>
+                <p>You rated {sessionStats.rated} card{sessionStats.rated !== 1 ? 's' : ''}.</p>
+                <p className="complete-sub">Cards you found hard will appear again sooner.</p>
+                <div className="complete-actions">
+                  <button className="btn-primary" onClick={() => startSession(selectedCategory, allCards, sm2State)}>
+                    Practice again
+                  </button>
+                  <button className="btn-ghost" onClick={handleResetProgress}>Reset progress</button>
+                </div>
+              </div>
+            ) : totalInQueue === 0 ? (
+              <div className="session-complete">
+                <div className="complete-icon">📭</div>
+                <h2>No cards found</h2>
+                <p>There are no cards in this category yet.</p>
+              </div>
+            ) : (
+              <>
+                <div className="progress-bar-wrap">
+                  <div className="progress-meta">
+                    <span>Card {currentIndex + 1} of {totalInQueue}</span>
+                    {dueInQueue > 0 && (
+                      <span className="progress-due">{dueInQueue} due today</span>
+                    )}
+                  </div>
+                  <div className="progress-track">
+                    <div
+                      className="progress-fill"
+                      style={{ width: `${(currentIndex / totalInQueue) * 100}%` }}
+                    />
+                  </div>
+                </div>
+
+                <FlashCard
+                  card={currentCard}
+                  isFlipped={isFlipped}
+                  onFlip={handleFlip}
+                />
+
+                {isFlipped && <RatingButtons onRate={handleRate} />}
+              </>
             )}
           </>
         )}
