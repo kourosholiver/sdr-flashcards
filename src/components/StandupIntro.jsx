@@ -17,10 +17,10 @@ const TAGLINES = [
   'No gatekeeper can save you now.',
   '"I went to Cambridge." — someone, probably.',
   'Objection handling or elimination. Your choice.',
-  'Today's quiz. Tomorrow's commission.',
+  "Today's quiz. Tomorrow's commission.",
   'Warwick has been training for this. Allegedly.',
   'Ben has already written his LinkedIn post about winning.',
-  'Gayatri has a plan. She hasn't told us what it is.',
+  "Gayatri has a plan. She hasn't told us what it is.",
   'Kiye is legally required to win three times in a row.',
 ]
 
