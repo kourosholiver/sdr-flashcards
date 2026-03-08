@@ -2,6 +2,8 @@ import { useState, useCallback } from 'react'
 import { SDRS, shuffle } from '../data/sdrs'
 import FlashCard from './FlashCard'
 import Leaderboard from './Leaderboard'
+import StandupIntro from './StandupIntro'
+import { playCorrect, playIncorrect } from '../utils/gameAudio'
 import './StandupMode.css'
 
 const STANDUP_KEY = 'sdr-standup-stats'
@@ -15,6 +17,7 @@ function loadStats() {
 function saveStats(s) { localStorage.setItem(STANDUP_KEY, JSON.stringify(s)) }
 
 export default function StandupMode({ cards }) {
+  const [introShown, setIntroShown] = useState(false)
   const [phase, setPhase] = useState(PHASE.IDLE)
   const [currentCard, setCurrentCard] = useState(null)
   const [currentSDR, setCurrentSDR] = useState(null)
@@ -37,6 +40,11 @@ export default function StandupMode({ cards }) {
     setLastResult(null)
     setPhase(PHASE.QUESTION)
   }, [cards, cardQueue, sdrQueue])
+
+  const handleIntroStart = useCallback(() => {
+    setIntroShown(true)
+    nextQuestion()
+  }, [nextQuestion])
 
   const handleSkipSameSDR = useCallback(() => {
     const cq = cardQueue.length > 0 ? cardQueue : shuffle(cards)
@@ -66,6 +74,7 @@ export default function StandupMode({ cards }) {
   }
 
   const handleMark = (correct) => {
+    correct ? playCorrect() : playIncorrect()
     const name = currentSDR.name
     const prev = stats[name] || { correct: 0, incorrect: 0 }
     const newStats = {
@@ -93,6 +102,11 @@ export default function StandupMode({ cards }) {
     saveStats({})
   }
 
+  // Show intro screen until the big button is pressed
+  if (!introShown) {
+    return <StandupIntro onStart={handleIntroStart} />
+  }
+
   return (
     <div className="standup">
       {/* ── CARD AREA ── */}
@@ -116,6 +130,9 @@ export default function StandupMode({ cards }) {
               className="sdr-spotlight"
               style={{ color: currentSDR.color, background: currentSDR.bg, borderColor: currentSDR.color + '55' }}
             >
+              {currentSDR.avatar && (
+                <img src={currentSDR.avatar} alt={currentSDR.name} className="sdr-spotlight-avatar" />
+              )}
               <span className="sdr-spotlight-name">{currentSDR.name}</span>
               <span className="sdr-spotlight-tag">your turn</span>
             </div>

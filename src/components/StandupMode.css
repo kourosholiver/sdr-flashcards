@@ -66,6 +66,16 @@
   to   { opacity: 1; transform: scale(1); }
 }
 
+.sdr-spotlight-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center top;
+  border: 2px solid currentColor;
+  opacity: 0.9;
+}
+
 .sdr-spotlight-name {
   font-size: 22px;
   font-weight: 800;

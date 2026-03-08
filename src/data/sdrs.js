@@ -1,8 +1,8 @@
 export const SDRS = [
-  { name: 'Ben',     color: '#3b82f6', bg: '#dbeafe' },
-  { name: 'Kiye',    color: '#7c3aed', bg: '#ede9fe' },
-  { name: 'Warwick', color: '#059669', bg: '#d1fae5' },
-  { name: 'Gayatri', color: '#d97706', bg: '#fef3c7' },
+  { name: 'Ben',     color: '#3b82f6', bg: '#dbeafe', avatar: '/avatars/ben.jpg',     title: 'The Closer' },
+  { name: 'Kiye',    color: '#7c3aed', bg: '#ede9fe', avatar: '/avatars/kiye.jpg',    title: 'The Smooth Talker' },
+  { name: 'Warwick', color: '#059669', bg: '#d1fae5', avatar: '/avatars/warwick.jpg', title: 'The Dark Horse' },
+  { name: 'Gayatri', color: '#d97706', bg: '#fef3c7', avatar: '/avatars/gayatri.jpg', title: 'The Wildcard' },
 ]
 
 export const MEDALS = ['🥇', '🥈', '🥉', '🏅']
