@@ -38,6 +38,18 @@ export default function StandupMode({ cards }) {
     setPhase(PHASE.QUESTION)
   }, [cards, cardQueue, sdrQueue])
 
+  const handleSkip = useCallback(() => {
+    const cq = cardQueue.length > 0 ? cardQueue : shuffle(cards)
+    const sq = sdrQueue.length > 0 ? sdrQueue : shuffle(SDRS)
+    setCurrentCard(cq[0])
+    setCurrentSDR(sq[0])
+    setCardQueue(cq.slice(1))
+    setSdrQueue(sq.slice(1))
+    setIsFlipped(false)
+    setLastResult(null)
+    setPhase(PHASE.QUESTION)
+  }, [cards, cardQueue, sdrQueue])
+
   const handleFlip = () => {
     if (phase !== PHASE.QUESTION) return
     setIsFlipped(true)
@@ -115,6 +127,10 @@ export default function StandupMode({ cards }) {
                 </button>
               </div>
             )}
+
+            <button className="skip-btn" onClick={handleSkip}>
+              Skip question →
+            </button>
           </>
         )}
       </div>

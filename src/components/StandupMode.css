@@ -130,6 +130,21 @@
   transform: translateY(0);
 }
 
+/* ── Skip button ── */
+.skip-btn {
+  background: none;
+  border: none;
+  font-size: 12px;
+  color: var(--text-muted);
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  transition: color 0.15s ease;
+}
+
+.skip-btn:hover {
+  color: var(--text-secondary);
+}
+
 /* ── Result flash ── */
 .result-flash {
   font-size: 28px;
