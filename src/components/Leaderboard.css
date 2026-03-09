@@ -118,8 +118,141 @@
   color: var(--text-muted);
 }
 
+/* ── Tabs ── */
+.lb-tabs {
+  display: flex;
+  gap: 4px;
+  background: var(--bg);
+  border-radius: var(--radius-sm);
+  padding: 3px;
+  margin-bottom: 16px;
+}
+
+.lb-tab {
+  flex: 1;
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 6px;
+  color: var(--text-muted);
+  transition: all 0.15s ease;
+  background: transparent;
+  border: none;
+}
+
+.lb-tab--active {
+  background: var(--card-bg);
+  color: var(--text);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+
+.lb-tab:hover:not(.lb-tab--active) {
+  color: var(--text-secondary);
+}
+
+.lb-period {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  margin-bottom: 14px;
+}
+
+.lb-syncing {
+  font-size: 11px;
+  color: var(--text-muted);
+  animation: syncing-pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes syncing-pulse {
+  0%, 100% { opacity: 0.4; }
+  50%       { opacity: 1; }
+}
+
+.lb-empty {
+  font-size: 13px;
+  color: var(--text-muted);
+  text-align: center;
+  padding: 24px 0;
+}
+
+.lb-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center top;
+  border: 2px solid var(--border);
+  flex-shrink: 0;
+}
+
+/* ── Past months ── */
+.lb-history {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.lb-history-month {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.lb-history-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+
+.lb-history-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.lb-history-winner {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.lb-history-pct {
+  font-weight: 500;
+  opacity: 0.8;
+}
+
+.lb-history-rows {
+  padding: 8px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.lb-history-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.lb-history-pos { font-size: 14px; width: 22px; flex-shrink: 0; }
+
+.lb-history-avatar {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center top;
+  flex-shrink: 0;
+}
+
+.lb-history-name  { flex: 1; font-weight: 600; }
+.lb-history-score { font-size: 12px; color: var(--text-secondary); font-weight: 500; }
+
 @media (max-width: 480px) {
-  .leaderboard {
-    padding: 16px;
-  }
+  .leaderboard { padding: 16px; }
 }

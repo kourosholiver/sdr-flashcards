@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { SDRS, shuffle } from '../data/sdrs'
 import FlashCard from './FlashCard'
 import Leaderboard from './Leaderboard'
@@ -6,38 +6,65 @@ import StandupIntro from './StandupIntro'
 import { playCorrect, playIncorrect } from '../utils/gameAudio'
 import './StandupMode.css'
 
-const STANDUP_KEY = 'sdr-standup-stats'
+const CACHE_KEY  = 'sdr-standup-stats'   // localStorage cache
+const PHASE      = { IDLE: 'idle', QUESTION: 'question', ANSWER: 'answer' }
 
-const PHASE = { IDLE: 'idle', QUESTION: 'question', ANSWER: 'answer' }
-
-function loadStats() {
-  try { return JSON.parse(localStorage.getItem(STANDUP_KEY)) || {} }
-  catch { return {} }
+function loadCache() {
+  try { return JSON.parse(localStorage.getItem(CACHE_KEY)) || {} } catch { return {} }
 }
-function saveStats(s) { localStorage.setItem(STANDUP_KEY, JSON.stringify(s)) }
+function saveCache(allTime) {
+  try { localStorage.setItem(CACHE_KEY, JSON.stringify(allTime)) } catch {}
+}
+
+async function apiFetch(path, opts = {}) {
+  const res = await fetch(path, {
+    ...opts,
+    headers: { 'Content-Type': 'application/json', ...(opts.headers || {}) },
+  })
+  if (!res.ok) throw new Error(await res.text())
+  return res.json()
+}
 
 export default function StandupMode({ cards }) {
-  const [introShown, setIntroShown] = useState(false)
-  const [phase, setPhase] = useState(PHASE.IDLE)
+  const [introShown,  setIntroShown]  = useState(false)
+  const [phase,       setPhase]       = useState(PHASE.IDLE)
   const [currentCard, setCurrentCard] = useState(null)
-  const [currentSDR, setCurrentSDR] = useState(null)
-  const [isFlipped, setIsFlipped] = useState(false)
-  const [stats, setStats] = useState(loadStats)
-  const [lastResult, setLastResult] = useState(null) // 'correct' | 'incorrect'
+  const [currentSDR,  setCurrentSDR]  = useState(null)
+  const [isFlipped,   setIsFlipped]   = useState(false)
+  const [lastResult,  setLastResult]  = useState(null)
 
-  // Shuffled queues — refill when empty so everyone gets equal turns
+  // Stats — allTime is the source of truth for the leaderboard
+  const [allTimeStats,   setAllTimeStats]   = useState(loadCache)
+  const [monthlyStats,   setMonthlyStats]   = useState({})
+  const [monthlyHistory, setMonthlyHistory] = useState({})
+  const [statsLoading,   setStatsLoading]   = useState(true)
+
+  // Shuffled queues
   const [cardQueue, setCardQueue] = useState([])
-  const [sdrQueue, setSdrQueue] = useState([])
+  const [sdrQueue,  setSdrQueue]  = useState([])
 
+  // ── Load stats from API on mount ──────────────────────────────────────────
+  useEffect(() => {
+    apiFetch('/api/stats')
+      .then(({ allTime, monthly, monthlyHistory: history }) => {
+        setAllTimeStats(allTime   || {})
+        setMonthlyStats(monthly   || {})
+        setMonthlyHistory(history || {})
+        saveCache(allTime || {})
+      })
+      .catch(() => {
+        // API unavailable — silently fall back to cached localStorage data
+      })
+      .finally(() => setStatsLoading(false))
+  }, [])
+
+  // ── Queue management ──────────────────────────────────────────────────────
   const nextQuestion = useCallback(() => {
     const cq = cardQueue.length > 0 ? cardQueue : shuffle(cards)
-    const sq = sdrQueue.length > 0 ? sdrQueue : shuffle(SDRS)
-    setCurrentCard(cq[0])
-    setCurrentSDR(sq[0])
-    setCardQueue(cq.slice(1))
-    setSdrQueue(sq.slice(1))
-    setIsFlipped(false)
-    setLastResult(null)
+    const sq = sdrQueue.length  > 0 ? sdrQueue  : shuffle(SDRS)
+    setCurrentCard(cq[0]); setCardQueue(cq.slice(1))
+    setCurrentSDR(sq[0]);  setSdrQueue(sq.slice(1))
+    setIsFlipped(false); setLastResult(null)
     setPhase(PHASE.QUESTION)
   }, [cards, cardQueue, sdrQueue])
 
@@ -48,64 +75,55 @@ export default function StandupMode({ cards }) {
 
   const handleSkipSameSDR = useCallback(() => {
     const cq = cardQueue.length > 0 ? cardQueue : shuffle(cards)
-    setCurrentCard(cq[0])
-    setCardQueue(cq.slice(1))
-    setIsFlipped(false)
-    setLastResult(null)
+    setCurrentCard(cq[0]); setCardQueue(cq.slice(1))
+    setIsFlipped(false); setLastResult(null)
     setPhase(PHASE.QUESTION)
   }, [cards, cardQueue])
 
   const handleSkip = useCallback(() => {
     const cq = cardQueue.length > 0 ? cardQueue : shuffle(cards)
-    const sq = sdrQueue.length > 0 ? sdrQueue : shuffle(SDRS)
-    setCurrentCard(cq[0])
-    setCurrentSDR(sq[0])
-    setCardQueue(cq.slice(1))
-    setSdrQueue(sq.slice(1))
-    setIsFlipped(false)
-    setLastResult(null)
+    const sq = sdrQueue.length  > 0 ? sdrQueue  : shuffle(SDRS)
+    setCurrentCard(cq[0]); setCardQueue(cq.slice(1))
+    setCurrentSDR(sq[0]);  setSdrQueue(sq.slice(1))
+    setIsFlipped(false); setLastResult(null)
     setPhase(PHASE.QUESTION)
   }, [cards, cardQueue, sdrQueue])
 
   const handleFlip = () => {
     if (phase !== PHASE.QUESTION) return
-    setIsFlipped(true)
-    setPhase(PHASE.ANSWER)
+    setIsFlipped(true); setPhase(PHASE.ANSWER)
   }
 
+  // ── Mark correct / incorrect ──────────────────────────────────────────────
   const handleMark = (correct) => {
     correct ? playCorrect() : playIncorrect()
     const name = currentSDR.name
-    const prev = stats[name] || { correct: 0, incorrect: 0 }
-    const newStats = {
-      ...stats,
-      [name]: {
-        correct:   prev.correct   + (correct ? 1 : 0),
-        incorrect: prev.incorrect + (correct ? 0 : 1),
-      },
+
+    // Optimistic local update
+    const bump = (prev) => {
+      const s = prev[name] || { correct: 0, incorrect: 0 }
+      return { ...prev, [name]: { correct: s.correct + (correct ? 1 : 0), incorrect: s.incorrect + (correct ? 0 : 1) } }
     }
-    setStats(newStats)
-    saveStats(newStats)
+    setAllTimeStats(prev => { const n = bump(prev); saveCache(n); return n })
+    setMonthlyStats(bump)
+
+    // Persist to database (fire-and-forget — optimistic update already applied)
+    apiFetch('/api/stats', {
+      method: 'POST',
+      body: JSON.stringify({ sdr_name: name, correct }),
+    }).catch(() => {
+      // If API fails, data is still safe in localStorage cache
+    })
+
     setLastResult(correct ? 'correct' : 'incorrect')
     setTimeout(() => {
       setPhase(PHASE.IDLE)
-      setCurrentCard(null)
-      setCurrentSDR(null)
-      setIsFlipped(false)
-      setLastResult(null)
+      setCurrentCard(null); setCurrentSDR(null)
+      setIsFlipped(false);  setLastResult(null)
     }, 900)
   }
 
-  const handleReset = () => {
-    if (!window.confirm('Reset all leaderboard stats? This cannot be undone.')) return
-    setStats({})
-    saveStats({})
-  }
-
-  // Show intro screen until the big button is pressed
-  if (!introShown) {
-    return <StandupIntro onStart={handleIntroStart} />
-  }
+  if (!introShown) return <StandupIntro onStart={handleIntroStart} />
 
   return (
     <div className="standup">
@@ -137,38 +155,31 @@ export default function StandupMode({ cards }) {
               <span className="sdr-spotlight-tag">your turn</span>
             </div>
 
-            <FlashCard
-              card={currentCard}
-              isFlipped={isFlipped}
-              onFlip={handleFlip}
-            />
+            <FlashCard card={currentCard} isFlipped={isFlipped} onFlip={handleFlip} />
 
             {phase === PHASE.ANSWER && (
               <div className="mark-buttons">
-                <button className="mark-btn mark-btn--correct" onClick={() => handleMark(true)}>
-                  ✓ Correct
-                </button>
-                <button className="mark-btn mark-btn--incorrect" onClick={() => handleMark(false)}>
-                  ✗ Incorrect
-                </button>
+                <button className="mark-btn mark-btn--correct"   onClick={() => handleMark(true)}>✓ Correct</button>
+                <button className="mark-btn mark-btn--incorrect" onClick={() => handleMark(false)}>✗ Incorrect</button>
               </div>
             )}
 
             <div className="skip-btns">
-              <button className="skip-btn" onClick={handleSkipSameSDR}>
-                Skip question
-              </button>
+              <button className="skip-btn" onClick={handleSkipSameSDR}>Skip question</button>
               <span className="skip-divider">·</span>
-              <button className="skip-btn" onClick={handleSkip}>
-                Next person →
-              </button>
+              <button className="skip-btn" onClick={handleSkip}>Next person →</button>
             </div>
           </>
         )}
       </div>
 
       {/* ── LEADERBOARD ── */}
-      <Leaderboard stats={stats} onReset={handleReset} />
+      <Leaderboard
+        allTimeStats={allTimeStats}
+        monthlyStats={monthlyStats}
+        monthlyHistory={monthlyHistory}
+        loading={statsLoading}
+      />
     </div>
   )
 }
