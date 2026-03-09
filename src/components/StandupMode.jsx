@@ -47,13 +47,22 @@ export default function StandupMode({ cards }) {
   useEffect(() => {
     apiFetch('/api/stats')
       .then(({ allTime, monthly, monthlyHistory: history }) => {
-        setAllTimeStats(allTime   || {})
-        setMonthlyStats(monthly   || {})
-        setMonthlyHistory(history || {})
-        saveCache(allTime || {})
+        // Only replace local data if the API actually returned scores.
+        // Never overwrite localStorage with an empty response — that would
+        // wipe scores recorded before the backend was connected.
+        const hasData = allTime && Object.keys(allTime).some(
+          k => (allTime[k].correct + allTime[k].incorrect) > 0
+        )
+        if (hasData) {
+          setAllTimeStats(allTime)
+          setMonthlyStats(monthly   || {})
+          setMonthlyHistory(history || {})
+          saveCache(allTime)
+        }
+        // If API returns empty, keep whatever is in localStorage / state
       })
       .catch(() => {
-        // API unavailable — silently fall back to cached localStorage data
+        // API unavailable — keep cached localStorage data
       })
       .finally(() => setStatsLoading(false))
   }, [])
